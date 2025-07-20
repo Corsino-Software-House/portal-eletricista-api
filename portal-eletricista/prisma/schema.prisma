@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  criadoEm  DateTime @default(now())
+
+  agendamentos Appointment[]
+  avaliacoes   Review[]
+}
+
+model Profissional {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  email        String   @unique
+  senha        String
+  bio          String?
+  cidade       String
+  bairro       String
+  fotoUrl      String?
+  notaMedia    Float?   @default(0)
+  criadoEm     DateTime @default(now())
+
+  agendamentos Appointment[]
+  avaliacoes   Review[]
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  criadoEm  DateTime @default(now())
+}
+
+model Appointment {
+  id             Int      @id @default(autoincrement())
+  clienteId      Int
+  profissionalId Int
+  dataHora       DateTime
+  local          String
+  status         String   @default("pendente")
+
+  cliente        Cliente      @relation(fields: [clienteId], references: [id])
+  profissional   Profissional @relation(fields: [profissionalId], references: [id])
+}
+
+model Review {
+  id             Int      @id @default(autoincrement())
+  clienteId      Int
+  profissionalId Int
+  nota           Int
+  comentario     String?
+  criadoEm       DateTime @default(now())
+
+  cliente        Cliente      @relation(fields: [clienteId], references: [id])
+  profissional   Profissional @relation(fields: [profissionalId], references: [id])
+}
