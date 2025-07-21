@@ -6,6 +6,7 @@ import {PrismaModule} from '../prisma/prisma.module';
 @Module({
   imports: [PrismaModule],
   providers: [AdminService],
-  controllers: [AdminController]
+  controllers: [AdminController],
+  exports: [AdminService], // Exporting AdminService to be used in other modules
 })
 export class AdminModule {}

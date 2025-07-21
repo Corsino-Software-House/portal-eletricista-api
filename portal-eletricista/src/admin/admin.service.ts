@@ -12,4 +12,7 @@ export class AdminService {
             data: { ...data, senha: hashed },
         });
     }
+    async findByEmail(email: string) {
+    return this.prisma.admin.findUnique({ where: { email } });
+  }
 }
