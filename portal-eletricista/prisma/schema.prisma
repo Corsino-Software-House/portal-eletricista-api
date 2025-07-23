@@ -16,6 +16,7 @@ model Cliente {
 
   agendamentos Appointment[]
   avaliacoes   Review[]
+  requests Request[]
 }
 
 model Profissional {
@@ -64,4 +65,17 @@ model Review {
 
   cliente        Cliente      @relation(fields: [clienteId], references: [id])
   profissional   Profissional @relation(fields: [profissionalId], references: [id])
+}
+
+model Request {
+  id         Int      @id @default(autoincrement())
+  clienteId  Int
+  titulo     String
+  descricao  String
+  cidade     String
+  bairro     String
+  criadoEm   DateTime @default(now())
+  status     String   @default("aberto")
+
+  cliente    Cliente  @relation(fields: [clienteId], references: [id])
 }
