@@ -9,9 +9,10 @@ import { AdminModule } from './admin/admin.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReviewModule } from './review/review.module';
 import { AppointmentModule } from './appointment/appointment.module';
+import { RequestModule } from './request/request.module';
 
 @Module({
-  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule],
+  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
