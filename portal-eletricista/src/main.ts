@@ -10,6 +10,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
   });
+  app.set('trust proxy', 1);
 app.enableCors({ origin: '*' });
   await app.listen(3000);
 }
