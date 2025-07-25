@@ -5,6 +5,7 @@ import {
   Put,
   UploadedFile,
   UseInterceptors,
+  Get
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -52,5 +53,10 @@ export class ProfissionalController {
       bio: body.bio,
       fotoUrl,
     });
+  }
+
+@Get('account')
+  getAccount(@Body() data: { email: string }) {
+    return this.service.findByEmail(data.email);
   }
 }
