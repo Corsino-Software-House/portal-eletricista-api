@@ -14,8 +14,9 @@ export class ProfissionalService {
 }
 
   async completeProfile(data: { id:number, bio: string; fotoUrl: string }) {
+    console.log('ID recebido:', data.id, '| Tipo:', typeof data.id);
     return this.prisma.profissional.update({
-      where: { id: data.id },
+      where: { id: Number(data.id) },
       data: { bio: data.bio, fotoUrl: data.fotoUrl },
     });
   }
