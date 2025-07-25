@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get,Query } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 
 @Controller('cliente')
@@ -10,7 +10,7 @@ export class ClienteController {
     return this.service.register(data);
   }
   @Get('account')
-  getAccount(@Body() data: { email: string }) {
-    return this.service.findByEmail(data.email);
+  getAccount(@Query('email') email: string) {
+    return this.service.findByEmail(email);
   }
 }
