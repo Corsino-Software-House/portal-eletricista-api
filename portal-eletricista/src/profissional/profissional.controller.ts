@@ -45,7 +45,7 @@ export class ProfissionalController {
   }),
 )
 async completeProfile(
-  @Body() body: { id: number; bio: string },
+  @Body() body: { id: number; bio: string,telefone: string },
   @UploadedFile() foto: Express.Multer.File,
   @Req() req: Request, // ✅ Aqui com tipo do express
 ) {
@@ -55,6 +55,7 @@ async completeProfile(
     id: body.id,
     bio: body.bio,
     fotoUrl,
+    telefone: body.telefone,
   });
 }
 
@@ -62,4 +63,39 @@ async completeProfile(
   getAccount(@Query('email') email: string) {
     return this.service.findByEmail(email);
   }
+
+  @Put('edit-profile')
+@UseInterceptors(
+  FileInterceptor('foto', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + extname(file.originalname));
+      },
+    }),
+  }),
+)
+async editProfile(
+  @Body() body: { id: number; nome?: string; email:string, telefone?: string },
+  @Req() req: Request,
+  @UploadedFile() foto?: Express.Multer.File,
+) {
+  const fotoUrl = foto
+    ? `${req.protocol}://${req.get('host')}/uploads/${foto.filename}`
+    : undefined;
+
+  return this.service.updateProfile({
+    id: body.id,
+    nome: body.nome,
+    telefone: body.telefone,
+    fotoUrl,
+  });
+}
+
+@Put('change-password')
+async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: string }) {
+  return this.service.changePassword(body);
+}
+
 }
