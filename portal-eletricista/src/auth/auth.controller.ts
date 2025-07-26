@@ -8,11 +8,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    const token = await this.authService.login(loginDto);
-    if (!token) {
-      throw new BadRequestException('Credenciais inválidas');
-    }
-    return { access_token: token };
+async login(@Body() loginDto: LoginDto) {
+  const result = await this.authService.login(loginDto);
+  if (!result) {
+    throw new BadRequestException('Credenciais inválidas');
   }
+  return result; 
+}
 }
