@@ -12,6 +12,8 @@ model Cliente {
   nome      String
   email     String   @unique
   senha     String
+  fotoUrl      String?
+  telefone    String?
   criadoEm  DateTime @default(now())
 
   agendamentos Appointment[]
@@ -28,6 +30,7 @@ model Profissional {
   cidade       String
   bairro       String
   fotoUrl      String?
+  telefone    String?
   notaMedia    Float?   @default(0)
   criadoEm     DateTime @default(now())
 
