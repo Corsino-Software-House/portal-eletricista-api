@@ -39,8 +39,10 @@ export class ProfissionalService {
     where: { id:  Number(data.id) },
     data: {
       nome: data.nome,
+      email: data.email,
       fotoUrl: data.fotoUrl,
       telefone: data.telefone,
+      bio: data.bio,
     },
   });
 }
