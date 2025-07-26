@@ -78,7 +78,7 @@ async completeProfile(
   }),
 )
 async editProfile(
-  @Body() body: { id: number; nome?: string; email:string, telefone?: string },
+  @Body() body: { id: number; nome?: string; email:string, telefone?: string,bio ?: string },
   @Req() req: Request,
   @UploadedFile() foto?: Express.Multer.File,
 ) {
@@ -89,8 +89,10 @@ async editProfile(
   return this.service.updateProfile({
     id: body.id,
     nome: body.nome,
+    email: body.email,
     telefone: body.telefone,
     fotoUrl,
+    bio: body.bio,
   });
 }
 

@@ -78,6 +78,7 @@ async editProfile(
   return this.service.updateProfile({
     id: body.id,
     nome: body.nome,
+    email: body.email,
     telefone: body.telefone,
     fotoUrl,
   });

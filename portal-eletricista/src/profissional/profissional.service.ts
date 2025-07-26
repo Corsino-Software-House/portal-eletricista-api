@@ -24,8 +24,10 @@ export class ProfissionalService {
     async updateProfile(data: {
   id: number;
   nome?: string;
+  email?: string;
+   telefone?: string;
   fotoUrl?: string;
-  telefone?: string;
+  bio?: string;
 }) {
   const cliente = await this.prisma.profissional.findUnique({ where: { id: data.id } });
 
