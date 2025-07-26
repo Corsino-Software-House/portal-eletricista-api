@@ -50,6 +50,7 @@ export class ClienteController {
     return this.service.completeProfile({
       id: body.id,
       fotoUrl,
+      telefone: body.telefone,
     });
   }
 

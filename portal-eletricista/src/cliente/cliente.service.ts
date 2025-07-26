@@ -13,11 +13,11 @@ export class ClienteService {
     });
   }
 
-  async completeProfile(data: { id:number, fotoUrl: string }) {
+  async completeProfile(data: { id:number, fotoUrl: string, telefone: string }) {
     console.log('ID recebido:', data.id, '| Tipo:', typeof data.id);
     return this.prisma.cliente.update({
       where: { id: Number(data.id) },
-      data: { fotoUrl: data.fotoUrl },
+      data: { fotoUrl: data.fotoUrl , telefone: data.telefone },
     });
   }
 
