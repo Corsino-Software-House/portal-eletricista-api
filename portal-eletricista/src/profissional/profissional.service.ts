@@ -29,7 +29,7 @@ export class ProfissionalService {
   fotoUrl?: string;
   bio?: string;
 }) {
-  const cliente = await this.prisma.profissional.findUnique({ where: { id: data.id } });
+  const cliente = await this.prisma.profissional.findUnique({ where: { id:Number(data.id) } });
 
   if (!cliente) {
     throw new Error('Cliente não encontrado');
@@ -62,7 +62,7 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   const novaSenhaHash = await bcrypt.hash(data.novaSenha, 10);
 
   return this.prisma.profissional.update({
-    where: { id: data.id },
+    where: { id:  Number(data.id) },
     data: { senha: novaSenhaHash },
   });
 }

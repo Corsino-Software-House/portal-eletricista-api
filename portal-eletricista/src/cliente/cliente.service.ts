@@ -35,7 +35,7 @@ export class ClienteService {
   }
 
   return this.prisma.cliente.update({
-    where: { id: data.id },
+    where: { id:  Number(data.id) },
     data: {
       nome: data.nome,
       email: data.email,
@@ -47,7 +47,7 @@ export class ClienteService {
 
 
 async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }) {
-  const cliente = await this.prisma.cliente.findUnique({ where: { id: data.id } });
+  const cliente = await this.prisma.cliente.findUnique({ where: { id: Number(data.id)} });
 
   if (!cliente) {
     throw new Error('cliente não encontrado');
@@ -61,7 +61,7 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   const novaSenhaHash = await bcrypt.hash(data.novaSenha, 10);
 
   return this.prisma.cliente.update({
-    where: { id: data.id },
+    where: { id: Number(data.id) },
     data: { senha: novaSenhaHash },
   });
 }
