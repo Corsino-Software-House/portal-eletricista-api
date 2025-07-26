@@ -13,11 +13,11 @@ export class ProfissionalService {
     });
 }
 
-  async completeProfile(data: { id:number, bio: string; fotoUrl: string,telefone: string, }) {
+  async completeProfile(data: { id:number, bio: string; fotoUrl: string,telefone: string, especialidade: string }) {
     console.log('ID recebido:', data.id, '| Tipo:', typeof data.id);
     return this.prisma.profissional.update({
       where: { id: Number(data.id) },
-      data: { bio: data.bio, fotoUrl: data.fotoUrl , telefone: data.telefone },
+      data: { bio: data.bio, fotoUrl: data.fotoUrl , telefone: data.telefone, especialidade: data.especialidade },
     });
   }
 

@@ -45,7 +45,7 @@ export class ProfissionalController {
   }),
 )
 async completeProfile(
-  @Body() body: { id: number; bio: string,telefone: string },
+  @Body() body: { id: number; bio: string,telefone: string, especialidade: string },
   @UploadedFile() foto: Express.Multer.File,
   @Req() req: Request, // ✅ Aqui com tipo do express
 ) {
@@ -56,6 +56,7 @@ async completeProfile(
     bio: body.bio,
     fotoUrl,
     telefone: body.telefone,
+    especialidade: body.especialidade,
   });
 }
 
