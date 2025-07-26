@@ -13,6 +13,59 @@ export class ClienteService {
     });
   }
 
+  async completeProfile(data: { id:number, fotoUrl: string }) {
+    console.log('ID recebido:', data.id, '| Tipo:', typeof data.id);
+    return this.prisma.cliente.update({
+      where: { id: Number(data.id) },
+      data: { fotoUrl: data.fotoUrl },
+    });
+  }
+
+  async updateProfile(data: {
+  id: number;
+  nome?: string;
+  email?:string,
+  fotoUrl?: string;
+  telefone?: string;
+}) {
+  const cliente = await this.prisma.cliente.findUnique({ where: { id: data.id } });
+
+  if (!cliente) {
+    throw new Error('Cliente não encontrado');
+  }
+
+  return this.prisma.cliente.update({
+    where: { id: data.id },
+    data: {
+      nome: data.nome,
+      email: data.email,
+      fotoUrl: data.fotoUrl,
+      telefone: data.telefone,
+    },
+  });
+}
+
+
+async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }) {
+  const cliente = await this.prisma.cliente.findUnique({ where: { id: data.id } });
+
+  if (!cliente) {
+    throw new Error('cliente não encontrado');
+  }
+
+  const senhaValida = await bcrypt.compare(data.senhaAtual, cliente.senha);
+  if (!senhaValida) {
+    throw new Error('Senha atual incorreta');
+  }
+
+  const novaSenhaHash = await bcrypt.hash(data.novaSenha, 10);
+
+  return this.prisma.cliente.update({
+    where: { id: data.id },
+    data: { senha: novaSenhaHash },
+  });
+}
+
   async findByEmail(email: string) {
     return this.prisma.cliente.findUnique({ where: { email } });
   }
