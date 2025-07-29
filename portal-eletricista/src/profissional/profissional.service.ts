@@ -29,9 +29,9 @@ export class ProfissionalService {
   fotoUrl?: string;
   bio?: string;
 }) {
-  const cliente = await this.prisma.profissional.findUnique({ where: { id:Number(data.id) } });
+  const profissional = await this.prisma.profissional.findUnique({ where: { id:Number(data.id) } });
 
-  if (!cliente) {
+  if (!profissional) {
     throw new Error('Cliente não encontrado');
   }
 
@@ -48,7 +48,7 @@ export class ProfissionalService {
 }
 
 async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }) {
-  const profissional = await this.prisma.profissional.findUnique({ where: { id: data.id } });
+  const profissional = await this.prisma.profissional.findUnique({ where: { id:  Number(data.id) } });
 
   if (!profissional) {
     throw new Error('Profissional não encontrado');

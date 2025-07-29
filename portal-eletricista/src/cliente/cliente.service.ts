@@ -28,7 +28,7 @@ export class ClienteService {
   fotoUrl?: string;
   telefone?: string;
 }) {
-  const cliente = await this.prisma.cliente.findUnique({ where: { id: data.id } });
+  const cliente = await this.prisma.cliente.findUnique({ where: { id:  Number(data.id) } });
 
   if (!cliente) {
     throw new Error('Cliente não encontrado');
