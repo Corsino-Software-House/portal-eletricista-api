@@ -30,37 +30,44 @@ export class PaypalService {
     }
   }
 
-  async createOrder(value: string): Promise<any> {
-    try {
-      const token = await this.getAccessToken();
+ async createOrder(value: string): Promise<any> {
+  try {
+    const token = await this.getAccessToken();
 
-      const res = await axios.post(
-        `${this.baseUrl}/v2/checkout/orders`,
-        {
-          intent: 'CAPTURE',
-          purchase_units: [
-            {
-              amount: {
-                currency_code: 'EUR',
-                value: value,
-              },
+    const res = await axios.post(
+      `${this.baseUrl}/v2/checkout/orders`,
+      {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: 'EUR',
+              value: value,
             },
-          ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
           },
+        ],
+        application_context: {
+          brand_name: "Portal Eletricista",
+          landing_page: "LOGIN", // ou "BILLING"
+          user_action: "PAY_NOW",
+          return_url: "https://seusite.com/paypal/success", // coloque sua URL real de sucesso
+          cancel_url: "https://seusite.com/paypal/cancel", // coloque sua URL real de cancelamento
         },
-      );
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
-      return res.data;
-    } catch (error) {
-      this.logger.error('Erro ao criar pedido no PayPal', error.response?.data || error);
-      throw new Error('Erro ao criar pedido no PayPal');
-    }
+    return res.data;
+  } catch (error) {
+    this.logger.error('Erro ao criar pedido no PayPal', error.response?.data || error);
+    throw new Error('Erro ao criar pedido no PayPal');
   }
+}
 
   async captureOrder(orderId: string): Promise<any> {
     try {
