@@ -41,7 +41,6 @@ export class PaypalController {
       throw new BadRequestException('Pacote inválido.');
     }
 
-    // Verifica se já tem assinatura ativa
     const existing = await this.subscriptionService.findByProfessional(body.profissionalId);
     const ativa = existing.find((s) => s.status === 'ativa');
     if (ativa) {
