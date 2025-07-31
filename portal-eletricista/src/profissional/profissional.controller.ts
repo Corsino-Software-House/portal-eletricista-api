@@ -7,7 +7,8 @@ import {
   UseInterceptors,
   Get,
   Query,
-  Req
+  Req,
+  Param
 } from '@nestjs/common';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -32,6 +33,17 @@ export class ProfissionalController {
   ) {
     return this.service.register(data);
   }
+
+  @Get('see-all')
+  seeAll() {
+    return this.service.seeAll();
+  }
+
+  @Get('/:id')
+findById(@Param('id') id: number) {
+  return this.service.findById(Number(id));
+}
+  
 @Put('complete-profile')
 @UseInterceptors(
   FileInterceptor('foto', {

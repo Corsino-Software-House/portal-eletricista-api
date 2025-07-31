@@ -13,6 +13,11 @@ export class ProfissionalService {
     });
 }
 
+
+async seeAll() {
+    return this.prisma.profissional.findMany();
+  }
+
   async completeProfile(data: { id:number, bio: string; fotoUrl: string,telefone: string, especialidade: string }) {
     console.log('ID recebido:', data.id, '| Tipo:', typeof data.id);
     return this.prisma.profissional.update({
@@ -70,5 +75,9 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
 
  async findByEmail(email: string) {
     return this.prisma.profissional.findUnique({ where: { email } });
+  }
+
+   async findById(id: number) {
+    return this.prisma.profissional.findUnique({ where: { id } });
   }
 }

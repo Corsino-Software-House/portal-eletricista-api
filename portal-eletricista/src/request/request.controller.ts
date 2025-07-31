@@ -6,13 +6,14 @@ export class RequestController {
   constructor(private readonly requestService: RequestService) {}
 
   @Post('create')
-  create(@Body() body: { clienteId:number,titulo:string,descricao: string,cidade:string,bairro:string }) {
+  create(@Body() body: { clienteId:number,titulo:string,descricao: string,cidade:string,bairro:string,especialidade:string }) {
     return this.requestService.create({
       titulo: body.titulo,
       descricao: body.descricao,
       cidade: body.cidade,
       bairro: body.bairro,
       cliente: { connect: { id: body.clienteId } },
+      especialidade: body.especialidade,
     });
   }
 

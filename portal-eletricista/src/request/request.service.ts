@@ -18,6 +18,7 @@ export class RequestService {
   findByCliente(clienteId: number) {
     return this.prisma.request.findMany({
       where: { clienteId },
+      
     });
   }
 

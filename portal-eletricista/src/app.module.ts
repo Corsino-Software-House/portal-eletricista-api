@@ -10,9 +10,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ReviewModule } from './review/review.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { RequestModule } from './request/request.module';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { CreditoUsoModule } from './credito-uso/credito-uso.module';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
-  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule],
+  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule, SubscriptionModule, CreditoUsoModule, WebhookModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
