@@ -13,10 +13,13 @@ import { RequestModule } from './request/request.module';
 import { SubscriptionModule } from './subscription/subscription.module';
 import { CreditoUsoModule } from './credito-uso/credito-uso.module';
 import { WebhookModule } from './webhook/webhook.module';
+import { PaypalService } from './paypal/paypal.service';
+import { PaypalController } from './paypal/paypal.controller';
+import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
-  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule, SubscriptionModule, CreditoUsoModule, WebhookModule],
-  controllers: [AppController],
-  providers: [AppService, PrismaService],
+  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule, SubscriptionModule, CreditoUsoModule, WebhookModule, PaypalModule],
+  controllers: [AppController, PaypalController],
+  providers: [AppService, PrismaService, PaypalService],
 })
 export class AppModule {}
