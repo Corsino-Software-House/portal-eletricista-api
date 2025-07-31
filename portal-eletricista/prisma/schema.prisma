@@ -8,43 +8,48 @@ datasource db {
 }
 
 model Cliente {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  senha     String
-  fotoUrl      String?
-  telefone    String?
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  fotoUrl  String?
+  telefone String?
+  criadoEm DateTime @default(now())
 
   agendamentos Appointment[]
   avaliacoes   Review[]
-  requests Request[]
+  requests     Request[]
 }
 
 model Profissional {
-  id           Int      @id @default(autoincrement())
-  nome         String
-  email        String   @unique
-  senha        String
-  bio          String?
-  cidade       String
-  bairro       String
-  fotoUrl      String?
-  telefone    String?
+  id            Int      @id @default(autoincrement())
+  nome          String
+  email         String   @unique
+  senha         String
+  bio           String?
+  cidade        String
+  bairro        String
+  fotoUrl       String?
+  telefone      String?
   especialidade String?
-  notaMedia    Float?   @default(0)
-  criadoEm     DateTime @default(now())
+  notaMedia     Float?   @default(0)
+  criadoEm      DateTime @default(now())
+
+  assinaturaAtual   Subscription? @relation("AssinaturaAtual", fields: [assinaturaAtualId], references: [id])
+  assinaturaAtualId Int?          @unique
 
   agendamentos Appointment[]
   avaliacoes   Review[]
+  assinaturas  Subscription[] @relation("ProfissionalAssinaturas")
+  usosCredito  CreditoUso[]      @relation("ProfissionalCreditoUsos")
 }
 
 model Admin {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  senha     String
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  criadoEm DateTime @default(now())
 }
 
 model Appointment {
@@ -55,31 +60,69 @@ model Appointment {
   local          String
   status         String   @default("pendente")
 
-  cliente        Cliente      @relation(fields: [clienteId], references: [id])
-  profissional   Profissional @relation(fields: [profissionalId], references: [id])
+  cliente      Cliente      @relation(fields: [clienteId], references: [id])
+  profissional Profissional @relation(fields: [profissionalId], references: [id])
 }
 
 model Review {
   id             Int      @id @default(autoincrement())
   clienteId      Int
   profissionalId Int
+  requestId      Int?     // <- Aqui adicionamos
   nota           Int
   comentario     String?
   criadoEm       DateTime @default(now())
 
-  cliente        Cliente      @relation(fields: [clienteId], references: [id])
-  profissional   Profissional @relation(fields: [profissionalId], references: [id])
+  cliente      Cliente      @relation(fields: [clienteId], references: [id])
+  profissional Profissional @relation(fields: [profissionalId], references: [id])
+  request      Request?     @relation(fields: [requestId], references: [id]) 
+
+   @@unique([clienteId, requestId])
 }
 
 model Request {
-  id         Int      @id @default(autoincrement())
-  clienteId  Int
-  titulo     String
-  descricao  String
-  cidade     String
-  bairro     String
-  criadoEm   DateTime @default(now())
-  status     String   @default("aberto")
-
-  cliente    Cliente  @relation(fields: [clienteId], references: [id])
+  id            Int      @id @default(autoincrement())
+  clienteId     Int
+  titulo        String
+  descricao     String
+  cidade        String
+  bairro        String
+  especialidade String
+  criadoEm      DateTime @default(now())
+  status        String   @default("aberto")
+  
+ usosCredito CreditoUso[]
+  cliente Cliente @relation(fields: [clienteId], references: [id])
+   reviews Review[]
 }
+
+model Subscription {
+  id                Int      @id @default(autoincrement())
+  profissionalId    Int
+  pacote            String // "Básico", "Profissional", etc.
+  valorPago         Float
+  creditosTotais    Int
+  creditosRestantes Int
+  dataInicio        DateTime @default(now())
+  dataFim           DateTime
+  status            String   @default("ativa") // ativa, expirada, cancelada, trocada
+  criadoEm          DateTime @default(now())
+
+  profissional                Profissional  @relation("ProfissionalAssinaturas", fields: [profissionalId], references: [id])
+  usos                        CreditoUso[]
+  profissionalAssinaturaAtual Profissional? @relation("AssinaturaAtual")
+}
+
+model CreditoUso {
+  id             Int      @id @default(autoincrement())
+  subscriptionId Int
+  requestId      Int?
+  profissionalId Int
+  quantidade     Int
+  criadoEm       DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  request      Request?     @relation(fields: [requestId], references: [id])
+   profissional  Profissional @relation("ProfissionalCreditoUsos", fields: [profissionalId], references: [id])
+}
+

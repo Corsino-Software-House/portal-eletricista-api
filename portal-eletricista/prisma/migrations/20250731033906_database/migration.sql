@@ -26,8 +26,10 @@ CREATE TABLE `Profissional` (
     `especialidade` VARCHAR(191) NULL,
     `notaMedia` DOUBLE NULL DEFAULT 0,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `assinaturaAtualId` INTEGER NULL,
 
     UNIQUE INDEX `Profissional_email_key`(`email`),
+    UNIQUE INDEX `Profissional_assinaturaAtualId_key`(`assinaturaAtualId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -60,10 +62,12 @@ CREATE TABLE `Review` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `clienteId` INTEGER NOT NULL,
     `profissionalId` INTEGER NOT NULL,
+    `requestId` INTEGER NULL,
     `nota` INTEGER NOT NULL,
     `comentario` VARCHAR(191) NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `Review_clienteId_requestId_key`(`clienteId`, `requestId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -75,11 +79,43 @@ CREATE TABLE `Request` (
     `descricao` VARCHAR(191) NOT NULL,
     `cidade` VARCHAR(191) NOT NULL,
     `bairro` VARCHAR(191) NOT NULL,
+    `especialidade` VARCHAR(191) NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` VARCHAR(191) NOT NULL DEFAULT 'aberto',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Subscription` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `profissionalId` INTEGER NOT NULL,
+    `pacote` VARCHAR(191) NOT NULL,
+    `valorPago` DOUBLE NOT NULL,
+    `creditosTotais` INTEGER NOT NULL,
+    `creditosRestantes` INTEGER NOT NULL,
+    `dataInicio` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `dataFim` DATETIME(3) NOT NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'ativa',
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CreditoUso` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `subscriptionId` INTEGER NOT NULL,
+    `requestId` INTEGER NULL,
+    `profissionalId` INTEGER NOT NULL,
+    `quantidade` INTEGER NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Profissional` ADD CONSTRAINT `Profissional_assinaturaAtualId_fkey` FOREIGN KEY (`assinaturaAtualId`) REFERENCES `Subscription`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -94,4 +130,19 @@ ALTER TABLE `Review` ADD CONSTRAINT `Review_clienteId_fkey` FOREIGN KEY (`client
 ALTER TABLE `Review` ADD CONSTRAINT `Review_profissionalId_fkey` FOREIGN KEY (`profissionalId`) REFERENCES `Profissional`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Review` ADD CONSTRAINT `Review_requestId_fkey` FOREIGN KEY (`requestId`) REFERENCES `Request`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Request` ADD CONSTRAINT `Request_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Subscription` ADD CONSTRAINT `Subscription_profissionalId_fkey` FOREIGN KEY (`profissionalId`) REFERENCES `Profissional`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CreditoUso` ADD CONSTRAINT `CreditoUso_subscriptionId_fkey` FOREIGN KEY (`subscriptionId`) REFERENCES `Subscription`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CreditoUso` ADD CONSTRAINT `CreditoUso_requestId_fkey` FOREIGN KEY (`requestId`) REFERENCES `Request`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CreditoUso` ADD CONSTRAINT `CreditoUso_profissionalId_fkey` FOREIGN KEY (`profissionalId`) REFERENCES `Profissional`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
