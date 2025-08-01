@@ -6,7 +6,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Get,
-  Query,
+  Param,
   Req
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -23,10 +23,10 @@ export class ClienteController {
   register(@Body() data: { nome: string; email: string; senha: string }) {
     return this.service.register(data);
   }
-  @Get('account')
-  getAccount(@Query('email') email: string) {
-    return this.service.findByEmail(email);
-  }
+ @Get('account/:email')
+ getAccount(@Param('email') email: string) {
+   return this.service.findByEmail(email);
+ }
 
   @Put('complete-profile')
   @UseInterceptors(
