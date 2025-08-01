@@ -50,9 +50,15 @@ export class PaypalController {
 
     console.log(`🎯 Webhook recebido: ${eventType} para orderId ${orderId}`);
 
-    if (eventType === 'PAYMENT.CAPTURE.COMPLETED') {
-      await this.paypalService.criarAssinaturaPorWebhook(orderId);
-    }
+    if (eventType === 'CHECKOUT.ORDER.APPROVED') {
+  const result = await this.paypalService.captureOrder(orderId);
+
+  if (result?.status === 'COMPLETED') {
+    await this.paypalService.criarAssinaturaPorWebhook(orderId);
+  } else {
+    throw new BadRequestException('Pagamento não foi completado após aprovação.');
+  }
+}
 
     return { received: true };
   }
