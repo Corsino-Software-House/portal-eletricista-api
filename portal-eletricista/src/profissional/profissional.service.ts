@@ -74,7 +74,7 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
 
 
  async findByEmail(email: string) {
-    return this.prisma.profissional.findUnique({ where: { email } });
+    return this.prisma.profissional.findFirst({ where: { email } });
   }
 
    async findById(id: number) {
