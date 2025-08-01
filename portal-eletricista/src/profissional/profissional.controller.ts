@@ -73,7 +73,7 @@ async completeProfile(
 }
 
 @Get('account')
-  getAccount(@Query('email') email: string) {
+  getAccount(@Param('email') email: string) {
     return this.service.findByEmail(email);
   }
 
