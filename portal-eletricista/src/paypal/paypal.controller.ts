@@ -66,4 +66,27 @@ export class PaypalController {
       assinatura: created,
     };
   }
+
+  @Post('webhook')
+async handleWebhook(@Body() payload: any) {
+  const eventType = payload?.event_type;
+  const orderId =
+    payload?.resource?.id || payload?.resource?.supplementary_data?.related_ids?.order_id;
+
+  if (!orderId) {
+    throw new BadRequestException('ID do pedido não encontrado no payload.');
+  }
+
+  // Log opcional
+  console.log(`Recebido webhook do PayPal: ${eventType} para orderId ${orderId}`);
+
+  if (eventType === 'CHECKOUT.ORDER.APPROVED') {
+    await this.paypalService.captureOrder(orderId);
+  }
+
+  // Aqui você pode também salvar o log do webhook, enviar email, etc.
+
+  return { received: true };
+}
+
 }

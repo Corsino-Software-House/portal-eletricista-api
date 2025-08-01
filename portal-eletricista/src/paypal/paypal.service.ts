@@ -50,8 +50,8 @@ export class PaypalService {
           brand_name: "Portal Eletricista",
           landing_page: "LOGIN", // ou "BILLING"
           user_action: "PAY_NOW",
-          return_url: "https://seusite.com/paypal/success", // coloque sua URL real de sucesso
-          cancel_url: "https://seusite.com/paypal/cancel", // coloque sua URL real de cancelamento
+          return_url: "http://localhost:5173/areadoprofissional/menu", // coloque sua URL real de sucesso
+          cancel_url: "http://localhost:5173/creditos", // coloque sua URL real de cancelamento
         },
       },
       {
