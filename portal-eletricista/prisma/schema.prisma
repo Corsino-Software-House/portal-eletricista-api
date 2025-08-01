@@ -42,6 +42,7 @@ model Profissional {
   avaliacoes   Review[]
   assinaturas  Subscription[] @relation("ProfissionalAssinaturas")
   usosCredito  CreditoUso[]      @relation("ProfissionalCreditoUsos")
+  pedidosPaypal  PedidoPaypal[]
 }
 
 model Admin {
@@ -88,6 +89,7 @@ model Request {
   cidade        String
   bairro        String
   especialidade String
+  creditos      Int?
   criadoEm      DateTime @default(now())
   status        String   @default("aberto")
   
@@ -124,5 +126,16 @@ model CreditoUso {
   subscription Subscription @relation(fields: [subscriptionId], references: [id])
   request      Request?     @relation(fields: [requestId], references: [id])
    profissional  Profissional @relation("ProfissionalCreditoUsos", fields: [profissionalId], references: [id])
+}
+
+model PedidoPaypal {
+  id             Int      @id @default(autoincrement())
+  orderId        String   @unique
+  profissionalId Int
+  pacote         String
+  processado     Boolean  @default(false)
+  criadoEm       DateTime @default(now())
+
+  profissional Profissional @relation(fields: [profissionalId], references: [id])
 }
 

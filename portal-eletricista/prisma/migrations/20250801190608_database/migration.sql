@@ -80,6 +80,7 @@ CREATE TABLE `Request` (
     `cidade` VARCHAR(191) NOT NULL,
     `bairro` VARCHAR(191) NOT NULL,
     `especialidade` VARCHAR(191) NOT NULL,
+    `creditos` INTEGER NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` VARCHAR(191) NOT NULL DEFAULT 'aberto',
 
@@ -111,6 +112,19 @@ CREATE TABLE `CreditoUso` (
     `quantidade` INTEGER NOT NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `PedidoPaypal` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `orderId` VARCHAR(191) NOT NULL,
+    `profissionalId` INTEGER NOT NULL,
+    `pacote` VARCHAR(191) NOT NULL,
+    `processado` BOOLEAN NOT NULL DEFAULT false,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `PedidoPaypal_orderId_key`(`orderId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -146,3 +160,6 @@ ALTER TABLE `CreditoUso` ADD CONSTRAINT `CreditoUso_requestId_fkey` FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE `CreditoUso` ADD CONSTRAINT `CreditoUso_profissionalId_fkey` FOREIGN KEY (`profissionalId`) REFERENCES `Profissional`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `PedidoPaypal` ADD CONSTRAINT `PedidoPaypal_profissionalId_fkey` FOREIGN KEY (`profissionalId`) REFERENCES `Profissional`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
