@@ -9,14 +9,15 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
+import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 
 @Controller('subscriptions')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @Post('create')
-  async create(@Body() body: any) {
-    const { profissionalId, pacote, dataFim } = body;
+ @Post()
+  async create(@Body() createSubscriptionDto: CreateSubscriptionDto) {
+    const { profissionalId, pacote, dataFim } = createSubscriptionDto;
 
     const pacoteInfo = {
       'Básico': { preco: 25, creditos: 20 },
@@ -29,7 +30,6 @@ export class SubscriptionController {
       throw new BadRequestException('Pacote inválido');
     }
 
-    // Verifica se já existe assinatura ativa para esse profissional
     const existing = await this.subscriptionService.findByProfessional(profissionalId);
     const ativa = existing.find((s) => s.status === 'ativa');
 
@@ -38,18 +38,20 @@ export class SubscriptionController {
     }
 
     const created = await this.subscriptionService.create({
-  profissionalId,
-  pacote,
-  valorPago: pacoteInfo.preco,
-  creditosTotais: pacoteInfo.creditos,
-  creditosRestantes: pacoteInfo.creditos,
-  dataFim: new Date(dataFim),
-});
+      profissionalId,
+      pacote,
+      valorPago: pacoteInfo.preco,
+      creditosTotais: pacoteInfo.creditos,
+      creditosRestantes: pacoteInfo.creditos,
+      dataFim: new Date(dataFim),
+      status: 'ativa',
+    });
 
     await this.subscriptionService.setActiveSubscription(profissionalId, created.id);
 
     return created;
   }
+
 
   @Get()
   findAll() {

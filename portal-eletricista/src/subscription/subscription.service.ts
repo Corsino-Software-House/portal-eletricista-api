@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateSubscriptionDto } from './dto/create-subscription.dto';
+import { Subscription } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -12,9 +14,22 @@ export class SubscriptionService {
   });
 }
 
-  async create(data: any) {
-    return this.prisma.subscription.create({ data });
+  async create(data: CreateSubscriptionDto): Promise<Subscription> {
+  const assinaturasAtivas = await this.prisma.subscription.findMany({
+    where: {
+      profissionalId: data.profissionalId,
+      status: 'ativa',
+    },
+  });
+
+  if (assinaturasAtivas.length > 0) {
+    throw new BadRequestException('Já existe uma assinatura ativa para este profissional.');
   }
+
+  return this.prisma.subscription.create({
+    data,
+  });
+}
 
   async findAll() {
     return this.prisma.subscription.findMany();
