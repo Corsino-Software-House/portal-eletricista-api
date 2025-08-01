@@ -72,10 +72,10 @@ async completeProfile(
   });
 }
 
-@Get('account')
-  getAccount(@Param('email') email: string) {
-    return this.service.findByEmail(email);
-  }
+@Get('account/:email')
+getAccount(@Param('email') email: string) {
+  return this.service.findByEmail(email);
+}
 
   @Put('edit-profile')
 @UseInterceptors(
