@@ -45,8 +45,8 @@ export class PaypalService {
           brand_name: 'Portal Eletricista',
           landing_page: 'LOGIN',
           user_action: 'PAY_NOW',
-          return_url: 'https://.../sucesso',
-          cancel_url: 'https://.../cancelado',
+          return_url: 'http://localhost:5173/sucesso',
+          cancel_url: 'http://localhost:5173/cancelado',
         },
       },
       {
