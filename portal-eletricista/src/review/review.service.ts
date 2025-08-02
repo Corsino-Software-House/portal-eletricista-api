@@ -89,4 +89,11 @@ export class ReviewService {
       },
     });
   }
+
+  async findRecentReviews() {
+  return this.prisma.review.findMany({
+    orderBy: { criadoEm: 'desc' },
+    take: 3,
+  });
+}
 }

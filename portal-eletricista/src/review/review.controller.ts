@@ -19,4 +19,10 @@ export class ReviewController {
   findByProfissional(@Param('id') id: string) {
     return this.reviewService.findByProfissionalId(Number(id));
   }
+
+  @Get('recent')
+findRecent() {
+  return this.reviewService.findRecentReviews();
+}
+
 }

@@ -80,4 +80,19 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
    async findById(id: number) {
     return this.prisma.profissional.findUnique({ where: { id } });
   }
+
+  async findTopAvaliados() {
+  return this.prisma.profissional.findMany({
+    orderBy: {
+      notaMedia: 'desc',
+    },
+    take: 3,
+    select: {
+      id: true,
+      nome: true,
+      fotoUrl: true,
+      notaMedia: true,
+    },
+  });
+}
 }

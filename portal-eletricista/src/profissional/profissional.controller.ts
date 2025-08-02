@@ -77,6 +77,11 @@ getAccount(@Param('email') email: string) {
   return this.service.findByEmail(email);
 }
 
+@Get('top-avaliados')
+  getTopAvaliados() {
+    return this.service.findTopAvaliados();
+  }
+
   @Put('edit-profile')
 @UseInterceptors(
   FileInterceptor('foto', {
