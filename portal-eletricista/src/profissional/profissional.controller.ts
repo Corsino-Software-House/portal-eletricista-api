@@ -39,6 +39,12 @@ export class ProfissionalController {
     return this.service.seeAll();
   }
 
+  
+@Get('/top-avaliados')
+  getTopAvaliados() {
+    return this.service.findTopAvaliados();
+  }
+
   @Get('/:id')
 findById(@Param('id') id: number) {
   return this.service.findById(Number(id));
@@ -76,11 +82,6 @@ async completeProfile(
 getAccount(@Param('email') email: string) {
   return this.service.findByEmail(email);
 }
-
-@Get('top-avaliados')
-  getTopAvaliados() {
-    return this.service.findTopAvaliados();
-  }
 
   @Put('edit-profile')
 @UseInterceptors(

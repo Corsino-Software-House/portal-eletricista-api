@@ -78,9 +78,13 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   }
 
    async findById(id: number) {
-    return this.prisma.profissional.findUnique({ where: { id } });
+  if (id === undefined || id === null) {
+    throw new Error('ID do profissional não foi fornecido.');
   }
-
+  return this.prisma.profissional.findUnique({
+    where: { id },
+  });
+}
   async findTopAvaliados() {
   return this.prisma.profissional.findMany({
     orderBy: {
