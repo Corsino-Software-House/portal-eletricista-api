@@ -125,7 +125,7 @@ async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: 
 
 @Delete('delete/:id')
 async remove(@Param('id') id: number) {
-  return this.service.deletarProfissional(id);   
+  return this.service.deletarProfissional(Number(id));   
 }
 
 
