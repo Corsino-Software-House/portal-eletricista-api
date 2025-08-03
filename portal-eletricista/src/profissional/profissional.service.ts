@@ -103,4 +103,16 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
 async contarProfissionais() {
   return this.prisma.profissional.count();
 }
+
+async deletarProfissional(id: number) {
+  const profissional = await this.prisma.profissional.findUnique({ where: { id } });
+
+  if (!profissional) {
+    throw new Error('Profissional não encontrado');
+  }
+
+  return this.prisma.profissional.delete({
+    where: { id },
+  });
+}
 }

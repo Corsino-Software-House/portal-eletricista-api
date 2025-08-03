@@ -7,7 +7,8 @@ import {
   UseInterceptors,
   Get,
   Param,
-  Req
+  Req,
+  Delete
 } from '@nestjs/common';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -96,6 +97,12 @@ async editProfile(
 @Put('change-password')
 async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: string }) {
   return this.service.changePassword(body);
+}
+
+
+@Delete('delete/:id')
+async remove(@Param('id') id: number) {
+  return this.service.deletarCliente(id); 
 }
 
 }

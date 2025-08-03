@@ -78,4 +78,12 @@ async seeAll() {
     return this.prisma.cliente.findMany();
   }
 
+async deletarCliente(id: number) {
+  const cliente = await this.prisma.cliente.findUnique({ where: { id } });
+  if (!cliente) {
+    throw new Error('Cliente não encontrado');
+  }
+  return this.prisma.cliente.delete({ where: { id } });
+
+}
 }

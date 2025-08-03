@@ -6,9 +6,9 @@ import {
   UploadedFile,
   UseInterceptors,
   Get,
-  Query,
   Req,
-  Param
+  Param,
+  Delete,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -38,7 +38,7 @@ export class ProfissionalController {
   seeAll() {
     return this.service.seeAll();
   }
-  
+
 @Get('total')
 async countProfissionais() {
   return this.service.contarProfissionais();
@@ -123,6 +123,10 @@ async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: 
   return this.service.changePassword(body);
 }
 
+@Delete('delete/:id')
+async remove(@Param('id') id: number) {
+  return this.service.deletarProfissional(id);   
+}
 
 
 }

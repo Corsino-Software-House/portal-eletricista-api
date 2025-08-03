@@ -20,7 +20,7 @@ export class RequestController {
   totalRequests() {
     return this.requestService.totalRequests();
   }
-  
+
   @Get('all')
   findAll() {
     return this.requestService.findAll();
@@ -36,7 +36,7 @@ export class RequestController {
     return this.requestService.findOne(Number(id));
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.requestService.remove(Number(id));
   }
