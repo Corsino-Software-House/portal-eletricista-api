@@ -16,7 +16,11 @@ export class RequestController {
       especialidade: body.especialidade,
     });
   }
-
+  @Get('total')
+  totalRequests() {
+    return this.requestService.totalRequests();
+  }
+  
   @Get('all')
   findAll() {
     return this.requestService.findAll();
@@ -42,9 +46,6 @@ concluir(@Param('id') id: string) {
   return this.requestService.concluir(Number(id));
 }
 
-  @Get('total')
-  totalRequests() {
-    return this.requestService.totalRequests();
-  }
+
 
 }

@@ -52,7 +52,11 @@ export class SubscriptionController {
     return created;
   }
 
-
+@Get('/valorPagoTotal')
+  somarValorPagoTotal() {
+    return this.subscriptionService.somarValorPagoTotal();
+  }
+  
   @Get()
   findAll() {
     return this.subscriptionService.findAll();
@@ -81,9 +85,6 @@ export class SubscriptionController {
   creditoPorId(@Param('id') id: string) {
     return this.subscriptionService.creditoPorId(+id);
   }
+
   
-  @Get('/valorPagoTotal')
-  somarValorPagoTotal() {
-    return this.subscriptionService.somarValorPagoTotal();
-  }
 }

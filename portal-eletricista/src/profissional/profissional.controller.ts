@@ -38,7 +38,11 @@ export class ProfissionalController {
   seeAll() {
     return this.service.seeAll();
   }
-
+  
+@Get('total')
+async countProfissionais() {
+  return this.service.contarProfissionais();
+}
   
 @Get('/top-avaliados')
   getTopAvaliados() {
@@ -119,9 +123,6 @@ async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: 
   return this.service.changePassword(body);
 }
 
-@Get('total')
-async countProfissionais() {
-  return this.service.contarProfissionais();
-}
+
 
 }

@@ -18,6 +18,11 @@ import { ClienteService } from './cliente.service';
 @Controller('cliente')
 export class ClienteController {
   constructor(private service: ClienteService) {}
+  
+@Get('total')
+async countClientes() {
+  return this.service.contarClientes();
+}
 
   @Post('register')
   register(@Body() data: { nome: string; email: string; senha: string }) {
@@ -88,12 +93,5 @@ async editProfile(
 async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: string }) {
   return this.service.changePassword(body);
 }
-
-@Get('total')
-async countClientes() {
-  return this.service.contarClientes();
-}
-
-
 
 }
