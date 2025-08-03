@@ -89,6 +89,11 @@ async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: 
   return this.service.changePassword(body);
 }
 
+@Get('total')
+async countClientes() {
+  return this.service.contarClientes();
+}
+
 
 
 }

@@ -67,4 +67,14 @@ export class SubscriptionService {
       select: { creditosRestantes: true },
     });
   }
+
+  async somarValorPagoTotal() {
+  const resultado = await this.prisma.subscription.aggregate({
+    _sum: {
+      valorPago: true,
+    },
+  });
+
+  return resultado._sum.valorPago ?? 0;
+}
 }

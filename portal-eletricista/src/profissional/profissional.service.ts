@@ -99,4 +99,8 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
     },
   });
 }
+
+async contarProfissionais() {
+  return this.prisma.profissional.count();
+}
 }

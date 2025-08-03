@@ -69,4 +69,10 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   async findByEmail(email: string) {
     return this.prisma.cliente.findUnique({ where: { email } });
   }
+
+async contarClientes() {
+  return this.prisma.cliente.count();
+}
+
+
 }

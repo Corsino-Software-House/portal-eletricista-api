@@ -81,4 +81,9 @@ export class SubscriptionController {
   creditoPorId(@Param('id') id: string) {
     return this.subscriptionService.creditoPorId(+id);
   }
+  
+  @Get('/valorPagoTotal')
+  somarValorPagoTotal() {
+    return this.subscriptionService.somarValorPagoTotal();
+  }
 }
