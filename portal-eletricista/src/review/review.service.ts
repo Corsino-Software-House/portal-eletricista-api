@@ -90,10 +90,17 @@ export class ReviewService {
     });
   }
 
-  async findRecentReviews() {
+ async findRecentReviews() {
   return this.prisma.review.findMany({
     orderBy: { criadoEm: 'desc' },
     take: 3,
+    include: {
+      cliente: {
+        select: {
+          nome: true,
+        },
+      },
+    },
   });
 }
 }
