@@ -60,14 +60,18 @@ export class CreditoUsoService {
     return uso;
   }
 
-  async listarUsos(profissionalId: number) {
-    return this.prisma.creditoUso.findMany({
-      where: { profissionalId },
-      include: {
-        request: true,
-        subscription: true,
+ async listarUsos(profissionalId: number) {
+  return this.prisma.creditoUso.findMany({
+    where: { profissionalId },
+    include: {
+      request: {
+        include: {
+          cliente: true,
+        },
       },
-      orderBy: { criadoEm: 'desc' },
-    });
-  }
+      subscription: true,
+    },
+    orderBy: { criadoEm: 'desc' },
+  });
+}
 }
