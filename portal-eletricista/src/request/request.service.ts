@@ -41,4 +41,11 @@ export class RequestService {
     data: { status: 'concluido' },
   });
 }
+
+  async atualizaCreditos(id: number, creditos: number) {
+    return this.prisma.request.update({
+      where: { id },
+      data: { creditos },
+    });
+  }
 }
