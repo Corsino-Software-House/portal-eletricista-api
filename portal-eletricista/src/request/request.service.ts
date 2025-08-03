@@ -48,4 +48,8 @@ export class RequestService {
       data: { creditos },
     });
   }
+
+  async totalRequests() {
+    return this.prisma.request.count();
+  }
 }

@@ -42,5 +42,9 @@ concluir(@Param('id') id: string) {
   return this.requestService.concluir(Number(id));
 }
 
+  @Get('total')
+  totalRequests() {
+    return this.requestService.totalRequests();
+  }
 
 }
