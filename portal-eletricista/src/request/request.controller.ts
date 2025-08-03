@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Delete, Param, Body,Patch } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Param, Body,Patch, Put } from '@nestjs/common';
 import { RequestService } from './request.service';
 
 @Controller('requests')
@@ -39,6 +39,14 @@ export class RequestController {
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.requestService.remove(Number(id));
+  }
+
+  @Put('atualiza-creditos/:id')
+  atualizaCreditos(
+    @Param('id') id: string,
+    @Body() body: { creditos: number },
+  ) {
+    return this.requestService.atualizaCreditos(Number(id), body.creditos);
   }
 
   @Patch(':id/concluir')
