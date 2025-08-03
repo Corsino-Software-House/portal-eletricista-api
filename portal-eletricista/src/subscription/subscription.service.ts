@@ -60,4 +60,11 @@ export class SubscriptionService {
       where: { id },
     });
   }
+
+  async creditoPorId(id: number) {
+    return this.prisma.subscription.findUnique({
+      where: { id },
+      select: { creditosRestantes: true },
+    });
+  }
 }
