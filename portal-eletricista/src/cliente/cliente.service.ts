@@ -74,5 +74,8 @@ async contarClientes() {
   return this.prisma.cliente.count();
 }
 
+async seeAll() {
+    return this.prisma.cliente.findMany();
+  }
 
 }
