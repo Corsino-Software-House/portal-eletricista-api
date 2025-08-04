@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class PaypalService {
   private readonly clientId = process.env.PAYPAL_CLIENT_ID;
   private readonly clientSecret = process.env.PAYPAL_CLIENT_SECRET;
-  private readonly baseUrl = 'https://api-m.sandbox.paypal.com';
+  private readonly baseUrl = 'https://api-m.paypal.com';
   private readonly logger = new Logger(PaypalService.name);
 
   constructor(private readonly prisma: PrismaService) {}
@@ -45,8 +45,8 @@ export class PaypalService {
           brand_name: 'Portal Eletricista',
           landing_page: 'LOGIN',
           user_action: 'PAY_NOW',
-          return_url: 'http://localhost:5173/sucesso',
-          cancel_url: 'http://localhost:5173/cancelado',
+          return_url: 'https://techmanlight.pt/sucesso',
+          cancel_url: 'https://techmanlight.pt/cancelado',
         },
       },
       {
