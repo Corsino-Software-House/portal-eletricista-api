@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';  // <-- importe aqui
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -18,7 +19,24 @@ import { PaypalController } from './paypal/paypal.controller';
 import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
-  imports: [AuthModule, ClienteModule, ProfissionalModule, AdminModule, PrismaModule, ReviewModule, AppointmentModule, RequestModule, SubscriptionModule, CreditoUsoModule, WebhookModule, PaypalModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,      // fica disponível em todo app
+      envFilePath: '.env', // opcional, padrão é .env
+    }),
+    AuthModule,
+    ClienteModule,
+    ProfissionalModule,
+    AdminModule,
+    PrismaModule,
+    ReviewModule,
+    AppointmentModule,
+    RequestModule,
+    SubscriptionModule,
+    CreditoUsoModule,
+    WebhookModule,
+    PaypalModule,
+  ],
   controllers: [AppController, PaypalController],
   providers: [AppService, PrismaService, PaypalService],
 })

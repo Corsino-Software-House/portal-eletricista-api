@@ -1,16 +1,26 @@
 import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaypalService {
-  private readonly clientId = process.env.PAYPAL_CLIENT_ID;
-  private readonly clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+   private readonly clientId: string;
+  private readonly clientSecret: string;
   private readonly baseUrl = 'https://api-m.paypal.com';
   private readonly logger = new Logger(PaypalService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+    constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {
+    this.clientId = this.configService.get<string>('PAYPAL_CLIENT_ID') ?? '';
+this.clientSecret = this.configService.get<string>('PAYPAL_CLIENT_SECRET') ?? '';
 
+if (!this.clientId || !this.clientSecret) {
+  throw new Error('Variáveis PAYPAL_CLIENT_ID e PAYPAL_CLIENT_SECRET são obrigatórias');
+  }
+}
   private async getAccessToken(): Promise<string> {
     try {
       const auth = Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64');
