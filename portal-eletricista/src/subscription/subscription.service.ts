@@ -61,14 +61,14 @@ export class SubscriptionService {
     });
   }
 
-  async creditoPorId(id: number) {
-  const subscription = await this.prisma.subscription.findUnique({
-    where: { id },
+  async creditoPorId(profissionalId: number) {
+  const subscription = await this.prisma.subscription.findFirst({
+    where: { profissionalId, status: 'ativa' },
     select: { creditosRestantes: true },
   });
 
   if (!subscription) {
-    throw new NotFoundException(`Subscription com ID ${id} não encontrada.`);
+    throw new NotFoundException(`Subscription com ID ${profissionalId} não encontrada.`);
   }
 
   return subscription;
