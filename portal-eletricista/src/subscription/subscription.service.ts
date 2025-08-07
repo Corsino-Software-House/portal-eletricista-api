@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { Subscription } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -62,10 +62,16 @@ export class SubscriptionService {
   }
 
   async creditoPorId(id: number) {
-    return this.prisma.subscription.findUnique({
-      where: { id },
-      select: { creditosRestantes: true },
-    });
+  const subscription = await this.prisma.subscription.findUnique({
+    where: { id },
+    select: { creditosRestantes: true },
+  });
+
+  if (!subscription) {
+    throw new NotFoundException(`Subscription com ID ${id} não encontrada.`);
+  }
+
+  return subscription;
   }
 
   async somarValorPagoTotal() {
