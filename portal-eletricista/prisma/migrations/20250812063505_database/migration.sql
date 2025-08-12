@@ -22,6 +22,8 @@ CREATE TABLE `Profissional` (
     `cidade` VARCHAR(191) NOT NULL,
     `bairro` VARCHAR(191) NOT NULL,
     `fotoUrl` VARCHAR(191) NULL,
+    `fotoFrenteUrl` VARCHAR(191) NULL,
+    `fotoVersoUrl` VARCHAR(191) NULL,
     `telefone` VARCHAR(191) NULL,
     `especialidade` VARCHAR(191) NULL,
     `notaMedia` DOUBLE NULL DEFAULT 0,
