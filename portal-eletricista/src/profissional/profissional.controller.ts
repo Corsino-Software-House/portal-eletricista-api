@@ -3,7 +3,7 @@ import {
   Post,
   Body,
   Put,
-  UploadedFile,
+  UploadedFiles,UploadedFile,
   UseInterceptors,
   Get,
   Req,
@@ -11,10 +11,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor,FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ProfissionalService } from './profissional.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('profissional')
 export class ProfissionalController {
@@ -54,33 +55,72 @@ findById(@Param('id') id: number) {
   return this.service.findById(Number(id));
 }
   
-@Put('complete-profile')
-@UseInterceptors(
-  FileInterceptor('foto', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, uniqueSuffix + extname(file.originalname));
-      },
-    }),
-  }),
-)
-async completeProfile(
-  @Body() body: { id: number; bio: string,telefone: string, especialidade: string },
-  @UploadedFile() foto: Express.Multer.File,
-  @Req() req: Request, // ✅ Aqui com tipo do express
-) {
-  const fotoUrl = `${req.protocol}://${req.get('host')}/uploads/${foto.filename}`;
+  @Put('complete-profile')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'fotoPerfil', maxCount: 1 },
+        { name: 'documentos', maxCount: 2 },
+      ],
+      {
+        storage: diskStorage({
+          destination: (req, file, cb) => {
+            if (file.fieldname === 'fotoPerfil') {
+              cb(null, 'uploads/foto-perfil');
+            } else if (file.fieldname === 'documentos') {
+              // Define pasta conforme o índice do arquivo no array documentos
+              const index = (req as any).fileIndex ?? 0;
+              (req as any).fileIndex = index + 1;
 
-  return this.service.completeProfile({
-    id: body.id,
-    bio: body.bio,
-    fotoUrl,
-    telefone: body.telefone,
-    especialidade: body.especialidade,
-  });
-}
+              if (index === 0) {
+                cb(null, 'uploads/documentos-tecnico/frente');
+              } else {
+                cb(null, 'uploads/documentos-tecnico/verso');
+              }
+            } else {
+              cb(null, 'uploads/others');
+            }
+          },
+          filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            cb(null, uniqueSuffix + extname(file.originalname));
+          },
+        }),
+      },
+    ),
+  )
+  async completeProfile(
+    @Body() body: { id: number; bio: string; telefone: string; especialidade: string },
+    @UploadedFiles() files: {
+      fotoPerfil?: Express.Multer.File[],
+      documentos?: Express.Multer.File[],
+    },
+    @Req() req: Request,
+  ) {
+    console.log('Arquivos recebidos:', files);
+    const fotoPerfilUrl = files.fotoPerfil && files.fotoPerfil[0]
+      ? `${req.protocol}://${req.get('host')}/uploads/foto-perfil/${files.fotoPerfil[0].filename}`
+      : null;
+
+    const fotoFrenteUrl = files.documentos && files.documentos[0]
+      ? `${req.protocol}://${req.get('host')}/uploads/documentos-tecnico/frente/${files.documentos[0].filename}`
+      : null;
+
+    const fotoVersoUrl = files.documentos && files.documentos[1]
+      ? `${req.protocol}://${req.get('host')}/uploads/documentos-tecnico/verso/${files.documentos[1].filename}`
+      : null;
+
+    return this.service.completeProfile({
+      id: body.id,
+      bio: body.bio,
+      telefone: body.telefone,
+      especialidade: body.especialidade,
+      fotoUrl: fotoPerfilUrl,       // foto principal do perfil
+      fotoFrenteUrl,
+      fotoVersoUrl,
+    });
+  }
+
 
 @Get('account/:email')
 getAccount(@Param('email') email: string) {

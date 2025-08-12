@@ -30,6 +30,8 @@ model Profissional {
   cidade        String
   bairro        String
   fotoUrl       String?
+  fotoFrenteUrl String?
+  fotoVersoUrl  String?
   telefone      String?
   especialidade String?
   notaMedia     Float?   @default(0)
@@ -38,11 +40,11 @@ model Profissional {
   assinaturaAtual   Subscription? @relation("AssinaturaAtual", fields: [assinaturaAtualId], references: [id])
   assinaturaAtualId Int?          @unique
 
-  agendamentos Appointment[]
-  avaliacoes   Review[]
-  assinaturas  Subscription[] @relation("ProfissionalAssinaturas")
-  usosCredito  CreditoUso[]      @relation("ProfissionalCreditoUsos")
-  pedidosPaypal  PedidoPaypal[]
+  agendamentos  Appointment[]
+  avaliacoes    Review[]
+  assinaturas   Subscription[] @relation("ProfissionalAssinaturas")
+  usosCredito   CreditoUso[]   @relation("ProfissionalCreditoUsos")
+  pedidosPaypal PedidoPaypal[]
 }
 
 model Admin {
@@ -69,16 +71,16 @@ model Review {
   id             Int      @id @default(autoincrement())
   clienteId      Int
   profissionalId Int
-  requestId      Int?     // <- Aqui adicionamos
+  requestId      Int? // <- Aqui adicionamos
   nota           Int
   comentario     String?
   criadoEm       DateTime @default(now())
 
   cliente      Cliente      @relation(fields: [clienteId], references: [id])
   profissional Profissional @relation(fields: [profissionalId], references: [id])
-  request      Request?     @relation(fields: [requestId], references: [id]) 
+  request      Request?     @relation(fields: [requestId], references: [id])
 
-   @@unique([clienteId, requestId])
+  @@unique([clienteId, requestId])
 }
 
 model Request {
@@ -92,10 +94,10 @@ model Request {
   creditos      Int?
   criadoEm      DateTime @default(now())
   status        String   @default("aberto")
-  
- usosCredito CreditoUso[]
-  cliente Cliente @relation(fields: [clienteId], references: [id])
-   reviews Review[]
+
+  usosCredito CreditoUso[]
+  cliente     Cliente      @relation(fields: [clienteId], references: [id])
+  reviews     Review[]
 }
 
 model Subscription {
@@ -125,7 +127,7 @@ model CreditoUso {
 
   subscription Subscription @relation(fields: [subscriptionId], references: [id])
   request      Request?     @relation(fields: [requestId], references: [id])
-   profissional  Profissional @relation("ProfissionalCreditoUsos", fields: [profissionalId], references: [id])
+  profissional Profissional @relation("ProfissionalCreditoUsos", fields: [profissionalId], references: [id])
 }
 
 model PedidoPaypal {
@@ -138,4 +140,3 @@ model PedidoPaypal {
 
   profissional Profissional @relation(fields: [profissionalId], references: [id])
 }
-
