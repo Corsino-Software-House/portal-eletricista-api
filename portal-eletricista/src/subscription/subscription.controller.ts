@@ -20,7 +20,7 @@ export class SubscriptionController {
     const { profissionalId, pacote, dataFim } = createSubscriptionDto;
 
     const pacoteInfo = {
-      'Básico': { preco: 5, creditos: 20 },
+      'Básico': { preco: 1, creditos: 20 },
       'Poupança': { preco: 60, creditos: 60 },
       'Profissional': { preco: 90, creditos: 100 },
       'Elite': { preco: 120, creditos: 150 },
