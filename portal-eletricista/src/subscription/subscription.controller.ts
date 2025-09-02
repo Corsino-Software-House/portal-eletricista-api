@@ -81,9 +81,9 @@ export class SubscriptionController {
   remove(@Param('id') id: string) {
     return this.subscriptionService.remove(+id);
   }
-  @Get('/credito/:id')
-  creditoPorId(@Param('id') id: string) {
-    return this.subscriptionService.creditoPorId(+id);
+  @Get('/credito/:profissionalId')
+  creditoPorId(@Param('profissionalId') profissionalId: string) {
+    return this.subscriptionService.creditoPorId(+profissionalId);
   }
 
   

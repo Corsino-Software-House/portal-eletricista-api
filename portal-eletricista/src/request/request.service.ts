@@ -42,6 +42,13 @@ export class RequestService {
   });
 }
 
+async aprovar(id: number) {
+  return this.prisma.request.update({
+    where: { id },
+    data: { status: 'ABERTO' },
+  });
+}
+
   async atualizaCreditos(id: number, creditos: number) {
     return this.prisma.request.update({
       where: { id },

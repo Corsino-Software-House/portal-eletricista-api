@@ -83,6 +83,19 @@ model Review {
   @@unique([clienteId, requestId])
 }
 
+enum TempoProjeto {
+  NORMAL
+  URGENTE
+  PIQUETE
+  AVARIA
+}
+
+enum StatusProjeto {
+  ESPERA     // aguardando aprovação do admin
+  ABERTO     // projeto aprovado
+  CONCLUIDO  // profissional concluiu o serviço
+}
+
 model Request {
   id            Int      @id @default(autoincrement())
   clienteId     Int
@@ -93,7 +106,9 @@ model Request {
   especialidade String
   creditos      Int?
   criadoEm      DateTime @default(now())
-  status        String   @default("aberto")
+  status        StatusProjeto
+  tempo         TempoProjeto
+  contato       String
 
   usosCredito CreditoUso[]
   cliente     Cliente      @relation(fields: [clienteId], references: [id])

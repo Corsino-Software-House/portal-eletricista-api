@@ -39,6 +39,10 @@ export class RequestController {
   findOne(@Param('id') id: string) {
     return this.requestService.findOne(Number(id));
   }
+  @Get(':id')
+  find(@Param('id') id: string) {
+    return this.requestService.findOne(Number(id));
+  }
 
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
@@ -55,6 +59,11 @@ export class RequestController {
 
   @Patch(':id/concluir')
 concluir(@Param('id') id: string) {
+  return this.requestService.concluir(Number(id));
+}
+
+ @Patch(':id/aprovar')
+aprovar(@Param('id') id: string) {
   return this.requestService.concluir(Number(id));
 }
 
