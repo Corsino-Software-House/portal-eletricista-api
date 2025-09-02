@@ -1,12 +1,13 @@
 import { Controller, Post, Get, Delete, Param, Body,Patch, Put } from '@nestjs/common';
 import { RequestService } from './request.service';
+import { TempoProjeto } from '@prisma/client';
 
 @Controller('requests')
 export class RequestController {
   constructor(private readonly requestService: RequestService) {}
 
   @Post('create')
-  create(@Body() body: { clienteId:number,titulo:string,descricao: string,cidade:string,bairro:string,especialidade:string }) {
+  create(@Body() body: { clienteId:number,titulo:string,descricao: string,cidade:string,bairro:string,especialidade:string,tempo: TempoProjeto,contato:string }) {
     return this.requestService.create({
       titulo: body.titulo,
       descricao: body.descricao,
@@ -14,6 +15,9 @@ export class RequestController {
       bairro: body.bairro,
       cliente: { connect: { id: body.clienteId } },
       especialidade: body.especialidade,
+      tempo: body.tempo,
+      status: 'ESPERA',
+      contato: body.contato,  
     });
   }
   @Get('total')

@@ -38,7 +38,7 @@ export class RequestService {
   async concluir(id: number) {
   return this.prisma.request.update({
     where: { id },
-    data: { status: 'concluido' },
+    data: { status: 'CONCLUIDO' },
   });
 }
 
