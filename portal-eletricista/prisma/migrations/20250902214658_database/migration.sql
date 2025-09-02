@@ -25,7 +25,7 @@ CREATE TABLE `Profissional` (
     `fotoFrenteUrl` VARCHAR(191) NULL,
     `fotoVersoUrl` VARCHAR(191) NULL,
     `telefone` VARCHAR(191) NULL,
-    `especialidade` VARCHAR(191) NULL,
+    `especialidades` JSON NULL,
     `notaMedia` DOUBLE NULL DEFAULT 0,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `assinaturaAtualId` INTEGER NULL,
@@ -68,6 +68,7 @@ CREATE TABLE `Review` (
     `nota` INTEGER NOT NULL,
     `comentario` VARCHAR(191) NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `status` ENUM('ESPERA', 'APROVADO', 'REPROVADO') NOT NULL DEFAULT 'ESPERA',
 
     UNIQUE INDEX `Review_clienteId_requestId_key`(`clienteId`, `requestId`),
     PRIMARY KEY (`id`)
@@ -84,7 +85,9 @@ CREATE TABLE `Request` (
     `especialidade` VARCHAR(191) NOT NULL,
     `creditos` INTEGER NULL,
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `status` VARCHAR(191) NOT NULL DEFAULT 'aberto',
+    `status` ENUM('ESPERA', 'ABERTO', 'CONCLUIDO') NOT NULL,
+    `tempo` ENUM('NORMAL', 'URGENTE', 'PIQUETE', 'AVARIA') NOT NULL,
+    `contato` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -127,6 +130,18 @@ CREATE TABLE `PedidoPaypal` (
     `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `PedidoPaypal_orderId_key`(`orderId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `OtpCode` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(191) NOT NULL,
+    `code` VARCHAR(191) NOT NULL,
+    `validado` BOOLEAN NOT NULL DEFAULT false,
+    `expiresAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
