@@ -22,7 +22,7 @@ async completeProfile(data: {
   id: number;
   bio: string;
   telefone: string;
-  especialidade: string;
+  especialidades: string[];
   fotoUrl?: string | null;
   fotoFrenteUrl?: string | null;
   fotoVersoUrl?: string | null;
@@ -32,7 +32,7 @@ async completeProfile(data: {
     data: {
       bio: data.bio,
       telefone: data.telefone,
-      especialidade: data.especialidade,
+      especialidades: data.especialidades,
       ...(data.fotoUrl && { fotoUrl: data.fotoUrl }),
       ...(data.fotoFrenteUrl && { fotoFrenteUrl: data.fotoFrenteUrl }),
       ...(data.fotoVersoUrl && { fotoVersoUrl: data.fotoVersoUrl }),

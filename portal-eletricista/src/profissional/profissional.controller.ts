@@ -90,7 +90,7 @@ findById(@Param('id') id: number) {
     ),
   )
   async completeProfile(
-    @Body() body: { id: number; bio: string; telefone: string; especialidade: string },
+    @Body() body: { id: number; bio: string; telefone: string; especialidades: string[] },
     @UploadedFiles() files: {
       fotoPerfil?: Express.Multer.File[],
       documentos?: Express.Multer.File[],
@@ -114,7 +114,7 @@ findById(@Param('id') id: number) {
       id: body.id,
       bio: body.bio,
       telefone: body.telefone,
-      especialidade: body.especialidade,
+      especialidades: body.especialidades,
       fotoUrl: fotoPerfilUrl,       // foto principal do perfil
       fotoFrenteUrl,
       fotoVersoUrl,

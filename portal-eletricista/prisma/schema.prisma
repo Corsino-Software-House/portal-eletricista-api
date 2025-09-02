@@ -33,7 +33,7 @@ model Profissional {
   fotoFrenteUrl String?
   fotoVersoUrl  String?
   telefone      String?
-  especialidade String?
+  especialidades Json?
   notaMedia     Float?   @default(0)
   criadoEm      DateTime @default(now())
 
@@ -139,4 +139,11 @@ model PedidoPaypal {
   criadoEm       DateTime @default(now())
 
   profissional Profissional @relation(fields: [profissionalId], references: [id])
+}
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
