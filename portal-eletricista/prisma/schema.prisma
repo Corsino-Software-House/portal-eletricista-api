@@ -67,6 +67,12 @@ model Appointment {
   profissional Profissional @relation(fields: [profissionalId], references: [id])
 }
 
+enum StatusReview {
+  ESPERA
+  APROVADO
+  REPROVADO
+}
+
 model Review {
   id             Int      @id @default(autoincrement())
   clienteId      Int
@@ -75,6 +81,7 @@ model Review {
   nota           Int
   comentario     String?
   criadoEm       DateTime @default(now())
+  status         StatusReview @default(ESPERA)
 
   cliente      Cliente      @relation(fields: [clienteId], references: [id])
   profissional Profissional @relation(fields: [profissionalId], references: [id])
@@ -159,6 +166,7 @@ model OtpCode {
   id        Int      @id @default(autoincrement())
   email     String
   code      String
+  validado  Boolean @default(false)
   expiresAt DateTime
   createdAt DateTime @default(now())
 }
