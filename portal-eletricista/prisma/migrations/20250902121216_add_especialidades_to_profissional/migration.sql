@@ -5,5 +5,5 @@
 
 */
 -- AlterTable
-ALTER TABLE `profissional` DROP COLUMN `especialidade`,
+ALTER TABLE `Profissional` DROP COLUMN `especialidade`,
     ADD COLUMN `especialidades` JSON NULL;
