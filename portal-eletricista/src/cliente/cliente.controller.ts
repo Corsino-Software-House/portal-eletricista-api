@@ -98,6 +98,10 @@ async editProfile(
 async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: string }) {
   return this.service.changePassword(body);
 }
+  @Put('recovery-password')
+async changePasswordByEmail(@Body() body: { email: string; novaSenha: string }) {
+  return this.service.changePasswordByEmail(body);
+}
 
 
 @Delete('delete/:id')

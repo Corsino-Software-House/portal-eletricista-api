@@ -66,6 +66,21 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   });
 }
 
+async changePasswordByEmail(data: { email: string; novaSenha: string }) {
+  const cliente = await this.prisma.cliente.findUnique({ where: { email: data.email} });
+
+  if (!cliente) {
+    throw new Error('cliente não encontrado');
+  }
+
+  const novaSenhaHash = await bcrypt.hash(data.novaSenha, 10);
+
+  return this.prisma.cliente.update({
+    where: { email: data.email },
+    data: { senha: novaSenhaHash },
+  });
+}
+
   async findByEmail(email: string) {
     return this.prisma.cliente.findUnique({ where: { email } });
   }
