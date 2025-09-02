@@ -163,6 +163,12 @@ async changePassword(@Body() body: { id: number; senhaAtual: string; novaSenha: 
   return this.service.changePassword(body);
 }
 
+ @Put('recovery-password')
+async changePasswordByEmail(@Body() body: { email: string; senhaAtual: string; novaSenha: string }) {
+  return this.service.changePasswordByEmail(body);
+}
+
+
 @Delete('delete/:id')
 async remove(@Param('id') id: number) {
   return this.service.deletarProfissional(Number(id));   

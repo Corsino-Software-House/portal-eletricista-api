@@ -87,6 +87,22 @@ async changePassword(data: { id: number; senhaAtual: string; novaSenha: string }
   });
 }
 
+async changePasswordByEmail(data: { email: string; novaSenha: string }) {
+  const profissional = await this.prisma.profissional.findUnique({ where: { email: data.email } });
+
+  if (!profissional) {
+    throw new Error('Profissional não encontrado');
+  }
+
+  const novaSenhaHash = await bcrypt.hash(data.novaSenha, 10);
+
+  return this.prisma.profissional.update({
+    where: { email: data.email },
+    data: { senha: novaSenhaHash },
+  });
+}
+
+
 
  async findByEmail(email: string) {
     return this.prisma.profissional.findUnique({ where: { email } });
