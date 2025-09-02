@@ -17,6 +17,12 @@ import { WebhookModule } from './webhook/webhook.module';
 import { PaypalService } from './paypal/paypal.service';
 import { PaypalController } from './paypal/paypal.controller';
 import { PaypalModule } from './paypal/paypal.module';
+import { OtpService } from './otp/otp.service';
+import { OtpController } from './otp/otp.controller';
+import { OtpModule } from './otp/otp.module';
+import {MailService } from './mail-service/mail-service.service';
+import { MailServiceController } from './mail-service/mail-service.controller';
+import { MailServiceModule } from './mail-service/mail-service.module';
 
 @Module({
   imports: [
@@ -36,8 +42,10 @@ import { PaypalModule } from './paypal/paypal.module';
     CreditoUsoModule,
     WebhookModule,
     PaypalModule,
+    OtpModule,
+    MailServiceModule,
   ],
-  controllers: [AppController, PaypalController],
-  providers: [AppService, PrismaService, PaypalService],
+  controllers: [AppController, PaypalController, OtpController, MailServiceController],
+  providers: [AppService, PrismaService, PaypalService, OtpService, MailService],
 })
 export class AppModule {}
