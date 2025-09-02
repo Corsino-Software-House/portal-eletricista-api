@@ -1,13 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { MailService } from 'src/mail-service/mail-service.service';
 
 @Injectable()
 export class RequestService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService,
+    private readonly emailService: MailService,
+  ) {}
 
-  create(data: Prisma.RequestCreateInput) {
-    return this.prisma.request.create({ data });
+  async create(data: Prisma.RequestCreateInput) {
+    const projeto = await this.prisma.request.create({ data });
+
+    // Busca emails dos admins
+    const admins = await this.prisma.admin.findMany({
+      select: { email: true },
+    });
+    const emails = admins.map((a) => a.email);
+
+    if (emails.length > 0) {
+      await this.emailService.sendEmail(
+        emails,
+        'Novo projeto postado 🚀',
+        `Um novo projeto foi criado: ${projeto.titulo}`,
+        `
+          <h2>Um novo projeto foi criado!</h2>
+          <p><strong>Título:</strong> ${projeto.titulo}</p>
+          <p><strong>Descrição:</strong> ${projeto.descricao}</p>
+          <p><strong>Status:</strong> ${projeto.status}</p>
+        `,
+      );
+    }
+
+    return projeto;
   }
 
   findAll() {
