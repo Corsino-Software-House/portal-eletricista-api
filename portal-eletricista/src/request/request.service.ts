@@ -82,12 +82,18 @@ async aprovar(id: number) {
   });
 }
 
-  async atualizaCreditos(id: number, creditos: number) {
-    return this.prisma.request.update({
-      where: { id },
-      data: { creditos },
-    });
-  }
+async atualizaCreditos(id: number, creditos: number) {
+  return this.prisma.request.update({
+    where: { id },
+    data: { creditos },
+    select: {
+      id: true,
+      creditos: true,
+      status: true, // se quiser retornar status também
+    },
+  });
+}
+
 
   async totalRequests() {
     return this.prisma.request.count();
