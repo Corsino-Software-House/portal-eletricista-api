@@ -85,7 +85,9 @@ async aprovar(id: number) {
 async atualizaCreditos(id: number, creditos: number) {
   return this.prisma.request.update({
     where: { id },
-    data: { creditos },
+    data: { creditos,
+    status: 'ABERTO'
+     },
     select: {
       id: true,
       creditos: true,
