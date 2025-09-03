@@ -29,6 +29,10 @@ export class RequestController {
   findAll() {
     return this.requestService.findAll();
   }
+  @Get('disponiveis')
+  findDisponiveis() {
+    return this.requestService.findDisponiveis();
+  }
 
   @Get('cliente/:clienteId')
   findByCliente(@Param('clienteId') clienteId: string) {

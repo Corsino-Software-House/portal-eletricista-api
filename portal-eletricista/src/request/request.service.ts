@@ -40,6 +40,14 @@ export class RequestService {
       include: { cliente: true },
     });
   }
+
+  findDisponiveis() {
+    return this.prisma.request.findMany({
+      where: { status: 'ABERTO' },
+      include: { cliente: true },
+    });
+  }
+
   findByCliente(clienteId: number) {
     return this.prisma.request.findMany({
       where: { clienteId },
