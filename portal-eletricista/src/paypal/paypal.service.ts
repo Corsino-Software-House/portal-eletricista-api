@@ -21,27 +21,29 @@ if (!this.clientId || !this.clientSecret) {
   throw new Error('Variáveis PAYPAL_CLIENT_ID e PAYPAL_CLIENT_SECRET são obrigatórias');
   }
 }
-  private async getAccessToken(): Promise<string> {
-    try {
-      const auth = Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64');
-
-      const res = await axios.post(
-        `${this.baseUrl}/v1/oauth2/token`,
-        'grant_type=client_credentials',
-        {
-          headers: {
-            Authorization: `Basic ${auth}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+ private async getAccessToken(): Promise<string> {
+  try {
+    const res = await axios.post(
+      `${this.baseUrl}/v1/oauth2/token`,
+      new URLSearchParams({ grant_type: 'client_credentials' }), // mais seguro que string crua
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-      );
+        auth: {
+          username: this.clientId,
+          password: this.clientSecret,
+        },
+      },
+    );
 
-      return res.data.access_token;
-    } catch (error) {
-      this.logger.error('Erro ao obter o token de acesso do PayPal', error.response?.data || error);
-      throw new Error('Erro ao obter o token de acesso do PayPal');
-    }
+    return res.data.access_token;
+  } catch (error) {
+    this.logger.error('Erro ao obter o token de acesso do PayPal', error.response?.data || error);
+    throw new Error('Erro ao obter o token de acesso do PayPal');
   }
+}
+
 
   async createOrder(value: string, profissionalId: number, pacote: string): Promise<any> {
     const token = await this.getAccessToken();
