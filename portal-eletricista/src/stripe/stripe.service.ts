@@ -45,7 +45,7 @@ export class StripeService {
       });
 
       // Salva no banco
-      await this.prisma.pedidoStripe.create({
+      await this.prisma.PedidoStripe.create({
         data: {
           orderId: session.id,
           profissionalId,
@@ -61,10 +61,10 @@ export class StripeService {
   }
 
   async markAsProcessed(orderId: string) {
-    const pedido = await this.prisma.pedidoStripe.findUnique({ where: { orderId } });
+    const pedido = await this.prisma.PedidoStripe.findUnique({ where: { orderId } });
     if (!pedido || pedido.processado) return;
 
-    await this.prisma.pedidoStripe.update({
+    await this.prisma.PedidoStripe.update({
       where: { id: pedido.id },
       data: { processado: true },
     });
@@ -74,7 +74,7 @@ export class StripeService {
 
 
   async criarAssinaturaPorWebhook(sessionId: string) {
-  const pedido = await this.prisma.pedidoStripe.findFirst({ where: { orderId: sessionId } });
+  const pedido = await this.prisma.PedidoStripe.findFirst({ where: { orderId: sessionId } });
 
   if (!pedido || pedido.processado) return;
 
@@ -113,7 +113,7 @@ export class StripeService {
   });
 
   // Marca pedido como processado
-  await this.prisma.pedidoStripe.update({
+  await this.prisma.PedidoStripe.update({
     where: { id: pedido.id },
     data: { processado: true },
   });
