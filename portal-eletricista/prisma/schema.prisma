@@ -45,6 +45,7 @@ model Profissional {
   assinaturas   Subscription[] @relation("ProfissionalAssinaturas")
   usosCredito   CreditoUso[]   @relation("ProfissionalCreditoUsos")
   pedidosPaypal PedidoPaypal[]
+  pedidosStripe PedidoStripe[]
 }
 
 model Admin {
@@ -156,6 +157,16 @@ model CreditoUso {
 }
 
 model PedidoPaypal {
+  id             Int      @id @default(autoincrement())
+  orderId        String   @unique
+  profissionalId Int
+  pacote         String
+  processado     Boolean  @default(false)
+  criadoEm       DateTime @default(now())
+
+  profissional Profissional @relation(fields: [profissionalId], references: [id])
+}
+model PedidoStripe {
   id             Int      @id @default(autoincrement())
   orderId        String   @unique
   profissionalId Int
