@@ -23,6 +23,9 @@ import { OtpModule } from './otp/otp.module';
 import {MailService } from './mail-service/mail-service.service';
 import { MailServiceController } from './mail-service/mail-service.controller';
 import { MailServiceModule } from './mail-service/mail-service.module';
+import { StripeService } from './stripe/stripe.service';
+import { StripeController } from './stripe/stripe.controller';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -44,8 +47,9 @@ import { MailServiceModule } from './mail-service/mail-service.module';
     PaypalModule,
     OtpModule,
     MailServiceModule,
+    StripeModule,
   ],
-  controllers: [AppController, PaypalController, OtpController, MailServiceController],
-  providers: [AppService, PrismaService, PaypalService, OtpService, MailService],
+  controllers: [AppController, PaypalController, OtpController, MailServiceController, StripeController],
+  providers: [AppService, PrismaService, PaypalService, OtpService, MailService, StripeService],
 })
 export class AppModule {}
