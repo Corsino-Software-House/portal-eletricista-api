@@ -6,7 +6,15 @@ export class CreditoUsoController {
   constructor(private readonly creditoUsoService: CreditoUsoService) {}
 
   @Post('usar')
-  async usarCredito(@Body() body: any) {
+  async usarCredito(
+    @Body()
+    body: {
+      subscriptionId: number;
+      requestId?: number;
+      profissionalId: number;
+      quantidade: number;
+    },
+  ) {
     const { subscriptionId, requestId, profissionalId, quantidade } = body;
 
     if (!subscriptionId || !profissionalId || !quantidade) {
@@ -20,6 +28,7 @@ export class CreditoUsoController {
       quantidade,
     });
   }
+
 
   @Get('profissional/:profissionalId')
   listarUsos(@Param('profissionalId') profissionalId: string) {

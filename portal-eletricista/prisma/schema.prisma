@@ -117,10 +117,13 @@ model Request {
   tempo         TempoProjeto
   contato       String
 
+  profissionaisIds Json?
+
   usosCredito CreditoUso[]
   cliente     Cliente      @relation(fields: [clienteId], references: [id])
   reviews     Review[]
 }
+
 
 model Subscription {
   id                Int      @id @default(autoincrement())

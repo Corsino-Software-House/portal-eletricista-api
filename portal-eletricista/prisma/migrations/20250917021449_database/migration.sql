@@ -88,6 +88,7 @@ CREATE TABLE `Request` (
     `status` ENUM('ESPERA', 'ABERTO', 'CONCLUIDO') NOT NULL,
     `tempo` ENUM('NORMAL', 'URGENTE', 'PIQUETE', 'AVARIA') NOT NULL,
     `contato` VARCHAR(191) NOT NULL,
+    `profissionaisIds` JSON NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

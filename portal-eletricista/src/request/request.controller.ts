@@ -71,6 +71,9 @@ aprovar(@Param('id') id: string) {
   return this.requestService.concluir(Number(id));
 }
 
-
+@Get(':id/profissionais')
+findProfissionais(@Param('id') id: string) {
+  return this.requestService.findProfissionaisByRequestId(Number(id));
+}
 
 }

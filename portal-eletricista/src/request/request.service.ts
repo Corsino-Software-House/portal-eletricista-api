@@ -100,4 +100,21 @@ async atualizaCreditos(id: number, creditos: number) {
   async totalRequests() {
     return this.prisma.request.count();
   }
+
+  async findProfissionaisByRequestId(requestId: number) {
+  const request = await this.prisma.request.findUnique({
+    where: { id: requestId },
+    select: { profissionaisIds: true },
+  });
+
+  if (!request || !request.profissionaisIds) {
+    return [];
+  }
+
+  const ids: number[] = request.profissionaisIds as any; // já vem como array de números
+
+  return this.prisma.profissional.findMany({
+    where: { id: { in: ids } },
+  });
+}
 }
